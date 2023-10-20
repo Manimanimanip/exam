@@ -1,0 +1,31 @@
+const fs = require('fs');
+const path = require('path');
+
+function listFilesRecursively(directoryPath) {
+
+  const files = fs.readdirSync(directoryPath);
+
+
+  files.forEach(file => {
+    
+    const filePath = path.join(directoryPath, file);
+
+   
+    if (fs.statSync(filePath).isDirectory()) {
+     
+      listFilesRecursively(filePath);
+    } else {
+     
+      console.log(filePath);
+    }
+  });
+}
+
+
+const targetDirectory = 'path/to/your/directory';
+
+listFilesRecursively(targetDirectory);
+
+
+
+
