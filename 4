@@ -1,0 +1,40 @@
+const http = require('http');
+const https = require('https');
+
+function makeHttpGetRequest(url, callback) {
+  
+  const moduleToUse = url.startsWith('https') ? https : http;
+
+  moduleToUse.get(url, (res) => {
+    let data = '';
+
+  
+    res.on('data', (chunk) => {
+      data += chunk;
+    });
+
+   
+    res.on('end', () => {
+      callback(null, data);
+    });
+  }).on('error', (err) => {
+    callback(err, null);
+  });
+}
+
+
+const targetUrl = 'https://www.example.com';
+
+makeHttpGetRequest(targetUrl, (err, responseBody) => {
+  if (err) {
+    console.error(`Error making HTTP request: ${err.message}`);
+    return;
+  }
+
+  console.log('Response body:', responseBody);
+});
+
+
+
+
+
